@@ -11,6 +11,15 @@
     <div id="app"></div>
 
     <script src="build.js"></script>
+    <!-- Mock CDN -->
+    <script src="http://mockjs.com/dist/mock.js"></script>
+    <script>
+    Mock.mock('/getCode', {
+      'code|1' : true ,
+      'msg'    : "手机号不存在"
+    });
+    </script>
+
 
 </body>
 </html>

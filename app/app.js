@@ -48,16 +48,19 @@ class Form extends React.Component {
           return
        } else {
           //  alert('手机号可以了！');
-          //  Ajax.post("/getCode",{phone:this.state.value},function(res){
-          //    console.log(res);
-          //  })
-           this.setState({count: 5});
-           this.timer = setInterval(()=>{
-             this.setState({count: this.state.count-1});
-             if(this.state.count<1){
-               clearInterval(this.timer)
+           Ajax.post("/getCode",{phone:this.state.value},(res)=>{
+             if (JSON.parse(res).code) {
+               this.setState({count: 5});
+               this.timer = setInterval(()=>{
+                 this.setState({count: this.state.count-1});
+                 if(this.state.count<1){
+                   clearInterval(this.timer)
+                 }
+               },1000)
+             }else{
+               alert(JSON.parse(res).msg)
              }
-           },1000)
+           })
        }
 
     }
