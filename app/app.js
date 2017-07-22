@@ -13,7 +13,7 @@ class Count extends React.Component {
   render(){
       console.log(this.props.count);
       return (
-        <span>{this.props.count<=0?"发送验证码":`请耐心等待${this.props.count}s`}</span>
+        <span>{this.props.count<=0?"发送验证码":`${this.props.pre+this.props.count+'s'+this.props.suf}`}</span>
       )
   }
 
@@ -27,14 +27,30 @@ class Form extends React.Component {
       this.state={
         value:"",
         btnText:"发送验证码",
-        count:0
+        count:0,
+        fullTime:60,
+        preText:"请耐心等待",
+        sufText:"后再发送"
       };
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
+      this.timeChange = this.timeChange.bind(this);
+      this.preChange = this.preChange.bind(this);
+      this.sufChange = this.sufChange.bind(this);
     }
 
     handleChange(e) {
       this.setState({value: e.target.value});
+    }
+
+    timeChange(e) {
+      this.setState({fullTime: e.target.value});
+    }
+    preChange(e) {
+      this.setState({preText: e.target.value});
+    }
+    sufChange(e) {
+      this.setState({sufText: e.target.value});
     }
 
     handleSubmit(e){
@@ -54,7 +70,7 @@ class Form extends React.Component {
           //  alert('手机号可以了！');
            Ajax.post("/getCode",{phone:this.state.value},(res)=>{
              if (JSON.parse(res).code) {
-               this.setState({count: 50});
+               this.setState({count: this.state.fullTime});
                this.timer = setInterval(()=>{
                  this.setState({count: this.state.count-1});
                  if(this.state.count<1){
@@ -74,8 +90,19 @@ class Form extends React.Component {
         <form onSubmit={this.handleSubmit}>
           <input type="text" value={this.state.value} onChange={this.handleChange} placeholder="填写手机号"/>
           <button type="submit" className={this.state.count>0?"disable":""}>
-            <Count count={this.state.count}></Count>
+            <Count count={this.state.count} pre={this.state.preText} suf={this.state.sufText}></Count>
           </button>
+          <hr />
+          <p>
+            <label>倒计时时间：</label>
+            <input type="text" value={this.state.fullTime} onChange={this.timeChange}/>
+          </p>
+          <p>
+            <label>文案模板：</label>
+            <input type="text" value={this.state.preText} onChange={this.preChange}/>
+            <label>{this.state.fullTime}s</label>
+            <input type="text" value={this.state.sufText} onChange={this.sufChange}/>
+          </p>
         </form>)
     }
 }
