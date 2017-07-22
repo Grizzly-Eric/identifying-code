@@ -2,7 +2,7 @@
 
 import React from 'react' ;
 import ReactDOM from 'react-dom' ;
-
+import "./style.less"
 
 ReactDOM.render(
   <div>Hello, world!</div>,
