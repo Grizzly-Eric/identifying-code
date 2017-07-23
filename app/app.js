@@ -24,7 +24,11 @@ class Form extends React.Component {
 
     timeChange(e) {
       if (e.target.value==Number(e.target.value)) {
-        this.setState({fullTime: e.target.value});
+        if (Number(e.target.value)>0) {
+          this.setState({fullTime: e.target.value});
+        }else {
+          alert("等待时间必须大于0秒")
+        }
       }
     }
     preChange(e) {
