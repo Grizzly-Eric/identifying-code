@@ -11,7 +11,6 @@ class Count extends React.Component {
     super(props)
   }
   render(){
-      console.log(this.props.count);
       return (
         <span>{this.props.count<=0?"发送验证码":`${this.props.pre+this.props.count+'s'+this.props.suf}`}</span>
       )
@@ -37,6 +36,7 @@ class Form extends React.Component {
       this.timeChange = this.timeChange.bind(this);
       this.preChange = this.preChange.bind(this);
       this.sufChange = this.sufChange.bind(this);
+      this.countReset = this.countReset.bind(this);
     }
 
     handleChange(e) {
@@ -44,13 +44,19 @@ class Form extends React.Component {
     }
 
     timeChange(e) {
-      this.setState({fullTime: e.target.value});
+      if (e.target.value==Number(e.target.value)) {
+        this.setState({fullTime: e.target.value});
+      }
+
     }
     preChange(e) {
       this.setState({preText: e.target.value});
     }
     sufChange(e) {
       this.setState({sufText: e.target.value});
+    }
+    countReset(e) {
+      this.setState({value: "",count:0});
     }
 
     handleSubmit(e){
@@ -92,6 +98,7 @@ class Form extends React.Component {
           <button type="submit" className={this.state.count>0?"disable":""}>
             <Count count={this.state.count} pre={this.state.preText} suf={this.state.sufText}></Count>
           </button>
+          <button type="reset" className={this.state.count>0?"":"disable"} onClick={this.countReset}>重置</button>
           <hr />
           <p>
             <label>倒计时时间：</label>
