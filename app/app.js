@@ -43,7 +43,7 @@ class Form extends React.Component {
       return (
         <form>
 
-          <Identifying fullTime={this.state.fullTime} preText={this.state.preText} sufText={this.state.sufText} postUrl="/getCode"></Identifying>
+          <Identifying {...this.props} fullTime={Number(this.state.fullTime)} preText={this.state.preText} sufText={this.state.sufText} postUrl="/getCode"></Identifying>
 
           <hr />
           <p>

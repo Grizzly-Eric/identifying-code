@@ -3,6 +3,7 @@
 import React from 'react' ;
 import ReactDOM from 'react-dom' ;
 import Ajax from './ajax.js';
+import PropTypes from 'prop-types';
 
 // 倒计时组件
 class Count extends React.Component {
@@ -22,7 +23,6 @@ class Identifying extends React.Component {
     super(props)
     this.state={
       value:"",
-      btnText:"发送验证码",
       count:0,
       preText:this.props.preText,
       sufText:this.props.sufText
@@ -34,15 +34,21 @@ class Identifying extends React.Component {
   handleChange(e) {
     this.setState({value: e.target.value});
   }
-  countReset(e) {
+  countReset() {
     this.setState({value: "",count:0});
   }
   handleSubmit(e){
+
     e.preventDefault()
+
+    console.log("ok1")
+
     if (this.state.count>0) {
       console.log("还不行，再等等");
       return
     }
+
+    console.log("ok2")
 
     // 手机号格式校验
     let phoneReg = /^1[34578]\d{9}$/;
@@ -51,6 +57,7 @@ class Identifying extends React.Component {
         alert('请输入有效的手机号码！');
         return
      } else {
+        console.log("ok3")
         //  alert('手机号可以了！');
          Ajax.post("/getCode",{phone:this.state.value},(res)=>{
            if (JSON.parse(res).code) {
@@ -68,17 +75,25 @@ class Identifying extends React.Component {
      }
 
   }
+  componentWillUnmount(){
+    this.countReset()
+  }
   render(){
     return (
       <div>
       <input type="text" value={this.state.value} onChange={this.handleChange} placeholder="填写手机号"/>
       <button className={this.state.count>0?"disable":""} onClick={this.handleSubmit}>
-        <Count count={this.state.count} pre={this.props.preText} suf={this.props.sufText}></Count>
+        <Count {...this.props} count={this.state.count} pre={this.props.preText} suf={this.props.sufText}></Count>
       </button>
       <button className={this.state.count>0?"":"disable"} onClick={this.countReset}>重置</button>
       </div>
     )
   }
+}
+
+// prop validation
+Identifying.propTypes = {
+    fullTime: PropTypes.number
 }
 
 export { Identifying as default } ;
